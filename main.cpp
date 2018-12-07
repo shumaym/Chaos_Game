@@ -4,12 +4,15 @@
 #include <string>
 #include <vector>
 #include <signal.h>
-#include "math.h"
 #include <unordered_map>
 #include <unistd.h>
 #include <getopt.h>
 #include <typeinfo>
 #include <sstream>
+
+#ifndef M_PI
+#define M_PI 3.14159265
+#endif
 
 typedef struct { uint16_t x; uint16_t y; } Vertex;
 
@@ -63,8 +66,7 @@ void log_SDL_error(const std::string &msg){
 /**
 * Handles interrupts, sets a flag to discontinue computation.
 */
-void signal_interrupt(int _)
-{
+void signal_interrupt(int _){
 	std::cout << std::endl << "Exiting." << std::endl;
 	flag_continue = false;
 }
@@ -73,14 +75,13 @@ double hash_point(int x, int y){
 	return x/PRIME_1 + y/PRIME_2;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]){
 	signal(SIGINT, signal_interrupt);
 	srand(time(0));
 
 	// Process arguments
 	int opt, prev_ind;
-	while(prev_ind = optind, (opt = getopt_long(argc, argv, "hs:d:v:f:", long_opts, &optind)) != EOF)
-	{
+	while(prev_ind = optind, (opt = getopt_long(argc, argv, "hs:d:v:f:", long_opts, &optind)) != EOF){
 		switch(opt){
 			case 'h':
 				std::cout << "Options:" << std::endl;
