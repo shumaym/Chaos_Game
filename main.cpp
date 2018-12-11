@@ -71,6 +71,9 @@ void signal_interrupt(int _){
 	flag_continue = false;
 }
 
+/**
+* Hashes the x and y coordinates of a point.
+*/
 double hash_point(int x, int y){
 	return x/PRIME_1 + y/PRIME_2;
 }
@@ -79,7 +82,7 @@ int main(int argc, char *argv[]){
 	signal(SIGINT, signal_interrupt);
 	srand(time(0));
 
-	// Process arguments
+	// Process passed arguments
 	int opt, prev_ind;
 	while(prev_ind = optind, (opt = getopt_long(argc, argv, "hs:d:v:f:", long_opts, &optind)) != EOF){
 		switch(opt){
@@ -210,6 +213,7 @@ int main(int argc, char *argv[]){
 	// Keep generating points until flag_continue is set to false
 	uint8_t die_roll;
 	double hash;
+	SDL_Event event;
 	uint32_t i = 0;
 	uint32_t num_rects = 0;
 	while (flag_continue){
@@ -220,7 +224,6 @@ int main(int argc, char *argv[]){
 		
 		// Hash the new point's position and check if it has already been created.
 		// If the point does not exist, create it.
-		// hash = x_point/PRIME_1 + y_point/PRIME_2;
 		hash = hash_point(x_point, y_point);
 		if (rects_hashmap[hash] == false){
 			rects_hashmap[hash] = true;
@@ -247,6 +250,14 @@ int main(int argc, char *argv[]){
 			// Update screen
 			SDL_RenderPresent(renderer);
 			SDL_Delay(frame_delay_ms);
+		}
+
+		// Check if the window's exit button has been pressed. If so, quit the game.
+		while (SDL_PollEvent(&event)){
+			if (event.type == SDL_QUIT){
+				std::cout << std::endl << "Exiting." << std::endl;
+				flag_continue = false;
+			}
 		}
 
 		i++;
