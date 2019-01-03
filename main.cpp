@@ -83,8 +83,8 @@ int main(int argc, char *argv[]){
 	srand(time(0));
 
 	// Process passed arguments
-	int opt, prev_ind;
-	while(prev_ind = optind, (opt = getopt_long(argc, argv, "hs:d:v:f:", long_opts, &optind)) != EOF){
+	int opt;
+	while((opt = getopt_long(argc, argv, "hs:d:v:f:", long_opts, &optind)) != EOF){
 		switch(opt){
 			case 'h':
 				std::cout << "Options:" << std::endl;
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
 				break;
 
 			case 'f':
-				if (std::atof(optarg) > 0.0 & std::atof(optarg) < 1.0){
+				if (std::atof(optarg) > 0.0 && std::atof(optarg) < 1.0){
 					factor = std::atof(optarg);
 					std::cout << "Factor set to " << factor << std::endl;
 				}
@@ -236,7 +236,7 @@ int main(int argc, char *argv[]){
 
 		if (i % stepping == 0){
 			// Clear renderer
-			SDL_SetRenderDrawColor(renderer, colour_background[0], colour_background[1] ,colour_background[2], 0xFF);
+			SDL_SetRenderDrawColor(renderer, colour_background[0], colour_background[1], colour_background[2], 0xFF);
 			SDL_RenderClear(renderer);
 
 			// Draw generated points
